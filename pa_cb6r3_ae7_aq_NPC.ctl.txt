@@ -1,0 +1,62 @@
+! 2023.10.11 -- Created by Wendell Walters (wendellw@mailbox.sc.edu)
+! This file is the process analysis file to tag the formation pathways
+! of NO2 and HNO3 for modeling D17O.   
+!
+!
+IRRTYPE = PARTIAL;
+DEFINE FAMILY NOX = NO+NO2;
+DEFINE FAMILY NTR = NTR1+NTR2+INTR;
+DEFINE FAMILY RO2s = MEO2+XO2+XO2H+ISO2+EPX2+BZO2+TO2+XLO2+HCO3+C2O3+CXO3+OPO3;
+DEFINE FAMILY ANO3 = ANO3I+ANO3J;
+!
+!
+!
+!=======================================================================
+! IPR_OUTPUTS
+!=======================================================================
+IPR_OUTPUT NOX =  EMIS+DDEP+CLDS+CHEM+TRNM+AERO; 
+IPR_OUTPUT HNO3 = EMIS+DDEP+CLDS+CHEM+TRNM+AERO;
+IPR_OUTPUT ANO3 = EMIS+DDEP+CLDS+CHEM+TRNM+AERO;
+IPR_OUTPUT ANO3K = EMIS+DDEP+CLDS+CHEM+TRNM+AERO;
+!
+!
+!
+!=======================================================================
+! IRR_OUTPUTS
+!=======================================================================
+!
+! NO2 production rates
+IRR_OUTPUT NO2prod = PROD[NO2];
+IRR_OUTPUT NO2fromNOO3 = <R3>;
+IRR_OUTPUT NO2fromNOHO2 = <R25>;
+IRR_OUTPUT NO2fromNORO2s = <R71>+<R79>+<R75>+<R151>+
+<R167>+<R176>+<R181>+<R186>+<R103>+<R53>
++<R61>+<R207>;
+IRR_OUTPUT NO2fromNOXO = <CL5>;
+IRR_OUTPUT NO2fromNOpO3 = <R3a>;
+IRR_OUTPUT NO2fromNOpHO2 = <R25a>;
+IRR_OUTPUT NO2fromNOpRO2s = <R71a>+<R79a>+<R75a>+<R151a>+
+<R167a>+<R176a>+<R181a>+<R186a>+<R103a>+<R53a>
++<R61a>+<R207a>;
+IRR_OUTPUT NO2fromNOpXO = <CL5a>;
+!
+!
+! HNO3 formation pathways
+IRR_OUTPUT HNO3prod = PROD[HNO3];
+IRR_OUTPUT HNO3fromOHNO2 = <R45>;
+IRR_OUTPUT HNO3fromhetNTR = <HET_NTR2>;
+IRR_OUTPUT HNO3fromN2O5 = <HET_N2O5IJ> + <HET_N2O5K> + 
+          <HET_H2NO3PIJA> + <HET_H2NO3PKA>;
+IRR_OUTPUT HNO3fromNO3 = PROD [HNO3] FROM [NO3];
+IRR_OUTPUT HNO3fromClNO3 = <HET_CLNO3_WAJ>;
+IRR_OUTPUT HNO3fromNO2het = 0.5*<HET_N02>;
+IRR_OUTPUT HNO3fromN2O5gas = 2*<R39>;
+!
+! alkyl nitrate NOx oxidation pathways
+IRR_OUTPUT NTR2prod = PROD[NTR2];
+IRR_OUTPUT NTR2fromNO = PROD[NTR2] FROM [NO];
+IRR_OUTPUT NTR2fromNO3 = PROD[NTR2] FROM [NO3];
+!
+!
+!
+ENDPA;
